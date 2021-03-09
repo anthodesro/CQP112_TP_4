@@ -1,0 +1,96 @@
+# Anthony Desrochers, Julien Lemieux, Maude Beauregard, Amélie Larcher
+
+from datetime import datetime
+
+print("                   ***********                    ")
+print("               ********* *********                ")
+print("            .********       ********              ")
+print("           ********   ** **   ********            ")
+print("          *********   .* **************           ")
+print("          ***********       ,**********           ")
+print("          ************** **   *********           ")
+print("          *********   ** **   *********           ")
+print("           *********         *********            ")
+print("            .*********** ***********.             ")
+print("               ********* *********                ")
+print("                   ***********                    ")
+print("--------------------------------------------------")
+print("               Bienvenido al banco                ")
+print("--------------------------------------------------")
+
+#variable
+solde = 0
+lstd = []
+lstr = []
+d = None
+r = None
+t = None
+no_client = "" 
+option = ""
+dt_string = "06/03/2021 22:27:50"
+
+def registre(variableFichier):
+    variableFichier.write(str(dt_object1) + "\n")
+    variableFichier.write("* Résumé des transaction :\n")
+    variableFichier.write("-Nb. retraits :" + str(len(lstr)) + "\n" )
+    variableFichier.write("-Nb. dépôt :" + str(len(lstd)) + "\n")
+    variableFichier.write("* Résumé des opération ($) :\n")
+    variableFichier.write("-Dépôts :" + str(lstd) + "\n")
+    variableFichier.write("-Retraits :" + str(lstr) + "\n")
+    variableFichier.write("-Restant :" + str(solde) + "\n")
+    variableFichier.write("\n")
+
+def convert_float(n):
+    try:
+        n = n.replace(",",".")
+        n = float(n)
+        return n
+    except ValueError:
+        return False
+    
+while True:
+    no_client = input("Saisir le numéro de carte-client : ")
+    if no_client.isnumeric():
+        no_client = int(no_client)
+        break
+
+with open("data/%s.txt" % no_client, "a+") as fichier_client:
+
+    while True:
+        option = input("Choisir une option (d, r ou t) : ")
+        if (option == "d"):
+            while True:
+                depot = str(input("Montant ($) : "))
+                depot = convert_float(depot)
+                if(depot != False):
+                    lstd.append(depot)
+                    solde = solde + depot
+                    break
+
+        if (option == "r"):
+            while True:
+                retrait = str(input("Montant ($) : "))
+                retrait = convert_float(retrait)
+                if solde < retrait:
+                    print("Fond insufisant, votre solde est de : ", solde)
+                    continue
+                if retrait > 0:
+                    lstr.append(retrait)
+                    solde = solde - retrait
+                    break   
+        if (option == "t"):
+                    break
+    dt_object1 = datetime.strptime(dt_string, "%d/%m/%Y %H:%M:%S")
+    registre(fichier_client)
+
+#Résumé des transactions
+print ("\n")
+print("* Résumé des transaction :")
+print("-Nb. retraits :", len(lstr))
+print("-Nb. dépôt :", len(lstd))
+print("* Résumé des opération ($) :")
+print("-Dépôts :", lstd)
+print("-Retraits :", lstr)
+print("-Restant :", solde)
+
+
