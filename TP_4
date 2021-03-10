@@ -54,7 +54,7 @@ while True:
         no_client = int(no_client)
         break
 
-with open("data/%s.txt" % no_client, "a+") as fichier_client:
+with open(".\data\%s.txt" % no_client, "a+") as fichier_client:
 
     while True:
         option = input("Choisir une option (d, r ou t) : ")
